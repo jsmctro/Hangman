@@ -1,0 +1,113 @@
+import java.util.Scanner;
+public class Hangman {
+	String secretWord;
+	String disguisedWord;
+	int guessCount = 0;
+	int wrongGuessCount = 0;
+	Scanner keyboard = new Scanner(System.in);
+	
+	//Precondition: need a word to put as the secret word, can be any word.
+	public void inputSecret() {
+		System.out.println("Enter the secret word:");
+		String word = keyboard.next();
+		for (int i=0; i < 50; i++) {
+			System.out.println(" ");
+		}
+		this.secretWord = word;
+		this.disguisedWord = "";
+		for (int c=0; c < secretWord.length(); c++)
+		{
+		this.disguisedWord += "?";
+		}
+		this.guessCount = 0;
+		this.wrongGuessCount = 0;
+	}
+	//postcondition: received a word to play the game and disguised it with question marks; also added space so it can be a two player game
+
+	
+	//precondition: class initialized
+	public String getSecretWord() {
+		return secretWord;
+		//postcondition: nothing changed
+	}
+	
+	
+	//precondition: guess full word given by user 
+	public void makeFullGuess() {
+		boolean correct = false;
+		System.out.println("The word disguised is: " + disguisedWord);
+		System.out.println("Would you like to guess the full word?");
+		System.out.println("Enter 'no' to go to character guess, enter 'yes' to guess entire word.");
+		String yesOrNo = keyboard.next();
+		String yes = ("yes");
+		String no = ("no");
+		if (yesOrNo.equalsIgnoreCase(yes)) {
+			System.out.println("Enter your one worded guess.");
+			
+			String fullAnswer = keyboard.next();
+				
+					if (fullAnswer.equalsIgnoreCase(secretWord)) {
+					this.guessCount++;
+					correct = true;
+					System.out.println("That is correct! the secret word was: " + secretWord);
+					int guessesTotal = getGuessCount();
+					System.out.println("You made a total of: " + guessesTotal + " guesses.");
+					int incorrect = getIncorrectGuesses();
+					System.out.println("You had a total of: " + incorrect + " incorrect guesses.");
+					int correctAmount = getCorrectGuesses();
+					System.out.println("You had a total of: " + correctAmount + " correct guesses.");
+					System.exit(0);
+					}
+					else { 
+					System.out.println("That word is not correct. Try guessing more letters!");
+					this.wrongGuessCount++;
+					makeFullGuess();
+					}
+		}else if (yesOrNo.equalsIgnoreCase(no)) {
+			System.out.println("Enter a single character guess:");
+		}
+		//postcondition; ability to guess full word, moves onto the character guess
+	}
+	
+	//precondition: asks user to start guessing each character in word
+	public void makeCharGuess() {
+		boolean correct=false;
+		String disguised = "";
+		char c;
+		c = keyboard.next().charAt(0);
+		for(int i=0; i<secretWord.length(); i++) {
+		if (secretWord.charAt(i)==c) {
+		correct = true;
+		System.out.println("That letter was correct!");
+		disguised += c;
+		} else {
+		disguised += disguisedWord.charAt(i);
+		}
+		}
+		this.disguisedWord = disguised;
+		this.guessCount ++;
+		if (!correct)
+		System.out.println("That was not one of the letters, try again.");
+		this.wrongGuessCount++;
+		makeFullGuess();
+		}
+	//postcondition: word is slowly uncovered, char replaces question marks
+	public boolean isFound() {
+		return !disguisedWord.contains("?");
+	}
+			
+	public String getDisguisedWord() {
+		return disguisedWord;
+	}
+	public int getGuessCount() {
+		return guessCount + wrongGuessCount;
+	}
+	public int getCorrectGuesses() {
+		return guessCount;
+	}
+	public int getIncorrectGuesses() {
+		return wrongGuessCount;
+	}
+			
+		
+	}
