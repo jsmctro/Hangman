@@ -1,0 +1,18 @@
+public class HangmanTest {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Hangman game1 = new Hangman();
+		game1.inputSecret();
+		game1.makeFullGuess();
+		boolean correct=false;
+		while (!correct) {
+		game1.makeCharGuess();
+		}
+		
+	}
+
+}
